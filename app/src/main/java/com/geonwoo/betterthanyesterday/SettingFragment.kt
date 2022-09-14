@@ -1,14 +1,20 @@
 package com.geonwoo.betterthanyesterday
 
-//import com.geonwoo.betterthanyesterday.receiver.AlarmReceiver
-//import com.geonwoo.betterthanyesterday.receiver.DeviceBootReceiver
+import android.app.AlarmManager
+import android.app.PendingIntent
+import android.content.ComponentName
+import android.content.Context
+import android.content.Intent
+import android.content.pm.PackageManager
+import com.geonwoo.betterthanyesterday.receiver.AlarmReceiver
+import com.geonwoo.betterthanyesterday.receiver.DeviceBootReceiver
 import android.os.Build
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.annotation.RequiresApi
-import androidx.fragment.app.Fragment
+import androidx.fragment.app.DialogFragment
 import androidx.fragment.app.viewModels
 import com.geonwoo.betterthanyesterday.databinding.FragmentSettingBinding
 import com.geonwoo.betterthanyesterday.viewmodels.SettingViewModel
@@ -16,7 +22,7 @@ import dagger.hilt.android.AndroidEntryPoint
 import java.util.*
 
 @AndroidEntryPoint
-class SettingFragment : Fragment() {
+class SettingFragment : DialogFragment() {
     private lateinit var binding: FragmentSettingBinding
     private val viewModel: SettingViewModel by viewModels()
 
@@ -58,32 +64,32 @@ class SettingFragment : Fragment() {
 
             viewModel.setAlarmMills(calendar.timeInMillis)
 
-//            diaryNotification(calendar)
+            diaryNotification(calendar)
         }
     }
 
-//    fun diaryNotification(calendar: Calendar) {
-//        val pm: PackageManager = requireActivity().packageManager
-//        val receiver = ComponentName(requireContext(), DeviceBootReceiver::class.java)
-//        val alarmIntent = Intent(context, AlarmReceiver::class.java)
-//        val pendingIntent = PendingIntent.getBroadcast(context, 0, alarmIntent, 0)
-//        val alarmManager = requireActivity().getSystemService(Context.ALARM_SERVICE) as AlarmManager?
-//
-//
-//        // 사용자가 매일 알람을 허용했다면
-//        if (alarmManager != null) {
-//            alarmManager.setRepeating(
-//                AlarmManager.RTC_WAKEUP, calendar.timeInMillis,
-//                AlarmManager.INTERVAL_DAY, pendingIntent
-//            )
-//
-//            // 부팅 후 실행되는 리시버 사용가능하게 설정
-//            pm.setComponentEnabledSetting(
-//                receiver,
-//                PackageManager.COMPONENT_ENABLED_STATE_ENABLED,
-//                PackageManager.DONT_KILL_APP
-//            )
-//        }
-//    }
+    fun diaryNotification(calendar: Calendar) {
+        val pm: PackageManager = requireActivity().packageManager
+        val receiver = ComponentName(requireContext(), DeviceBootReceiver::class.java)
+        val alarmIntent = Intent(context, AlarmReceiver::class.java)
+        val pendingIntent = PendingIntent.getBroadcast(context, 0, alarmIntent, 0)
+        val alarmManager = requireActivity().getSystemService(Context.ALARM_SERVICE) as AlarmManager?
+
+
+        // 사용자가 매일 알람을 허용했다면
+        if (alarmManager != null) {
+            alarmManager.setRepeating(
+                AlarmManager.RTC_WAKEUP, calendar.timeInMillis,
+                AlarmManager.INTERVAL_DAY, pendingIntent
+            )
+
+            // 부팅 후 실행되는 리시버 사용가능하게 설정
+            pm.setComponentEnabledSetting(
+                receiver,
+                PackageManager.COMPONENT_ENABLED_STATE_ENABLED,
+                PackageManager.DONT_KILL_APP
+            )
+        }
+    }
 
 }

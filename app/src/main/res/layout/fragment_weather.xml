@@ -23,6 +23,16 @@
         xmlns:app="http://schemas.android.com/apk/res-auto"
         tools:context=".WeatherFragment">
 
+        <ImageView
+            android:id="@+id/setting_view"
+            android:layout_width="70dp"
+            android:layout_height="70dp"
+            android:src="@drawable/setting"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            android:layout_margin="30dp"
+            />
+
         <TextView
             android:id="@+id/text_view"
             android:layout_width="wrap_content"
@@ -31,7 +41,7 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintBottom_toTopOf="@id/image_view"
-            app:layout_constraintVertical_bias=".2"
+            app:layout_constraintVertical_bias=".4"
             yesterdayTemp="@{yesterdayTemp}"
             todayTemp="@{todayTemp}"
             tools:text="어제보다 따뜻해요"

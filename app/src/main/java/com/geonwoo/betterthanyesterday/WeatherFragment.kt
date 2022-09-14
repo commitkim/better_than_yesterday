@@ -3,8 +3,6 @@ package com.geonwoo.betterthanyesterday
 import android.Manifest
 import android.content.Context
 import android.content.pm.PackageManager
-import android.location.Address
-import android.location.Geocoder
 import android.location.Location
 import android.location.LocationManager
 import android.os.Bundle
@@ -19,7 +17,6 @@ import androidx.fragment.app.viewModels
 import com.geonwoo.betterthanyesterday.databinding.FragmentWeatherBinding
 import com.geonwoo.betterthanyesterday.viewmodels.WeatherViewModel
 import dagger.hilt.android.AndroidEntryPoint
-import java.io.IOException
 import java.text.SimpleDateFormat
 import java.util.*
 
@@ -76,6 +73,10 @@ class WeatherFragment : Fragment() {
         getLocation()?.let { location ->
             subscribeUI()
             getWeatherResponse(location.latitude, location.longitude)
+        }
+
+        binding.settingView.setOnClickListener {
+            SettingFragment().show(parentFragmentManager, "setting")
         }
     }
 
